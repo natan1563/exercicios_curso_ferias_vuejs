@@ -1,0 +1,27 @@
+let dados = [12, 3, 8, -2, 18, 5, 6, -1];
+let par   = [];
+let impar = [];
+
+let i = 0;
+do {
+    let entrada = parseInt(prompt('Digite o numero que deseja armazenar'));
+    dados.push(entrada);
+    i++;
+}while(i < 4);
+
+dados.forEach((dado)=>{
+    let retorno = 0;
+    switch(true) {
+        case (dado % 2 === 0): 
+            retorno = dado > 0 ? dado : null; 
+            par.push(retorno);
+        break;
+
+        case (dado % 2 !== 0):
+            retorno = dado > 0 ? dado : null; 
+            impar.push(retorno); 
+        break;
+    }
+});
+
+console.log(dados, par, impar);

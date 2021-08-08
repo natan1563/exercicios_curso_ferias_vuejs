@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Sugestoes</title>
+</head>
+<body>
+    
+    <div id="app">
+        <div class="container">
+            <div class="row mt-3">
+                <div class="col-md-12" style="display: flex">
+                        <div class="col-md-11">
+                            <h3>{{  title }}</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <button @click="clearAllPills()" class="btn btn-primary">Limpar</button>
+                        </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <p>{{ descript }}</p>
+            </div>
+
+            <div class="row col-md-10 border pb-3">
+                <div v-for="topic of topics" class="col-md-3 mt-3">
+                    <button @click="checkTopic(topic)" :id="topics.indexOf(topic)" class="badge bg-primary border-1"> {{ topic }} </button>
+                </div>
+            </div>
+            <div class="row col-md-2 mt-3">
+                <button id="btnProcessar" class="btn btn-danger" disabled>Processar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                title: 'Fofocas da vizinha',
+                descript: 'Dona flor traiu seu zé com o entregador de jornais',
+                topics: [
+                    'Concurso Miss Dondoca', 
+                    'Feira da galinha polaca',
+                    'Feira do rolo',
+                    'Lava jato da petrobras',
+                    'Ação do orfanato Prop-Ina',
+                    'Blitz do policial guaraná',
+                    'Arrecadações de fundos ( ͡° ͜ʖ ͡°)'
+                ],
+                selectedTopics: []
+            },
+            methods: {
+                checkTopic(topic) {
+                    const btnProcessar = document.querySelector('#btnProcessar');
+                    btnProcessar.setAttribute('disabled', 'disabled');
+
+                    const pill = document.getElementById(this.topics.indexOf(topic));
+                    this.checkClassPill(pill);
+
+                    if (this.selectedTopics.includes(topic)){
+                        this.selectedTopics.splice(this.selectedTopics.indexOf(topic), 1)
+                    } else {
+                        this.selectedTopics.push(topic); 
+                    } 
+
+                    if(this.selectedTopics.length > 0) btnProcessar.removeAttribute('disabled');
+                    
+                },
+                checkClassPill(pill) {
+                    switch (true) {
+                        case pill.classList.contains('bg-danger'): 
+                            pill.classList.remove('bg-danger');
+                            pill.classList.add('bg-primary');
+                        break;
+
+                        case pill.classList.contains('bg-primary'): 
+                            pill.classList.remove('bg-primary');
+                            pill.classList.add('bg-danger');
+                        break;
+                    }
+                },
+                clearAllPills() {
+                    for (topic of this.selectedTopics) {
+                        let pill = document.getElementById(this.topics.indexOf(topic));
+                        pill.classList.remove('bg-danger');
+                        pill.classList.add('bg-primary');
+                    }
+
+                    this.selectedTopics.slice(this.selectedTopics.indexOf(topic), this.selectedTopics.length);
+                    btnProcessar.setAttribute('disabled', 'disabled');
+
+                }
+            }
+        })
+    </script>
+  
+</body>
+</html>

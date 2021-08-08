@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Impressora de cards</title>
+</head>
+<body>
+    <script>
+        let card = document.querySelector('#cardSpace');
+        
+        const funcionario = [
+            {
+                nome: "Nata Romao",
+                totalFilhos: 1,
+                idadeFilhos: '1',
+            },
+            {
+                nome: "Ivan Cria da Itinga",
+                totalFilhos: 10,
+                idadeFilhos: '1, 2, 3, 4, 5, 6, 7, 8, 9, 10',
+            },
+            {
+                nome: "Javeiro do nordeste",
+                totalFilhos: 70,
+                idadeFilhos: '1, 3, 4, 5, 6',
+            }
+        ];
+
+        function criarCards(dados, id) {
+            document.body.innerHTML += `<div class="container" id="${id}"></div>`;
+            let cardList = document.querySelector(`#${id}`);
+            
+            dados.forEach((dado) => {
+                let bonificavel = 'Não';
+                let valorBonificacao = 0;
+                
+                dado.idadeFilhos.split(',').forEach((idade)=>{
+                    if (dado.totalFilhos >= 0) {
+                        switch(true) {
+                            case (idade > 0 && idade < 10):
+                                valorBonificacao += 70;
+                                bonificavel = 'Sim';
+                                break;
+                            case (idade < 18 && idade >= 10): 
+                                valorBonificacao += 50;
+                                bonificavel = 'Sim';
+                                break;
+                            break;
+                        }
+                    }
+                });
+
+                valorBonificacao = parseFloat(valorBonificacao).toFixed(2);
+
+                cardList.innerHTML += `
+                        <div class="card bg-warning mt-2" style="width: 18rem;">
+                            <div class="card-body">
+                                <p class="card-text">Nome:             <span class="text-primary">${dado.nome}</span></p>
+                                <p class="card-text">Total de Filhos:  <span class="text-primary">${dado.totalFilhos}</span></p>
+                                <p class="card-text">Idade dos filhos: <span class="text-primary">${dado.idadeFilhos}</span></p>
+                                <p class="card-text">Bonificável:      <span class="text-primary">${bonificavel}</span></p>
+                                <p class="card-text">Valor do Bônus:   <span class="text-primary"> R$ ${valorBonificacao}</span></p>
+                            </div>
+                        </div>
+                            `
+            });
+        }
+
+        criarCards(funcionario, 'teste');
+    </script>
+</body>
+</html>
